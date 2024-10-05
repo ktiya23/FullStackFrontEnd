@@ -7,19 +7,21 @@ import HomePage from './pages/HomePage';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import NotFoundPage from './pages/NotFoundPage';
+import ProductPage from './pages/ProductPage';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <>
       <ChakraProvider>
         <AuthProvider>
-          <Router>  {/* Use BrowserRouter instead of Router */}
+          <Router>  
             <NavBar />
             <Routes>
               <Route path='/' element={<HomePage />} />
               <Route path='/login' element={ <Login /> } />
               <Route path='/signup' element={ <Signup /> } />
-              {/* Private route for products can be implemented here */}
+              <Route path='/products' element={<PrivateRoute><ProductPage /></PrivateRoute>} />
               <Route path='*' element={ <NotFoundPage /> } />
             </Routes>
           </Router>

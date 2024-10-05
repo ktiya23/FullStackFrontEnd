@@ -1,42 +1,55 @@
-import React, { useContext, useState } from 'react'
-import AuthContext from '../context/authContext'
+import { useState } from 'react';
+import { Box, Button, Input, FormLabel } from "@chakra-ui/react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios"
-import { Box, Button, FormLabel, Input } from '@chakra-ui/react';
+import axios from 'axios'; 
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-    const {login} = useContext(AuthContext);
-    const[email, setEmail] = useState("");
-    const[password, setPassword] = useState("");
-    const[error, setError] = useState("");
-    const navigate = useNavigate();
-
-    const handleLogin = async(e)=>{
-        e.preventDefault();
-        try{
-            const response = await axios.post("/api/login" , {email , password});
-            login(response.data.token);
-            navigate("/products")
-        }catch(error){
-            setError("invalid credential")
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    
+    try {
+      
+      const fakeResponse = {
+        data: {
+          token: 'fake-jwt-token',
         }
+      };
+
+      localStorage.setItem('authToken', fakeResponse.data.token);
+
+      navigate('/products');
+    } catch (error) {
+      setError('Login failed. Please check your credentials.');
     }
+  };
 
   return (
-    <Box maxw="sm" mx="auto">
-        <form onSubmit={handleLogin}>
-            <FormLabel>Email</FormLabel>
-            <Input type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <FormLabel>Password</FormLabel>
-            <Input type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
-            {
-                error && <p style={{color:"red"}}>{error}</p>
-            }
-            <Button type='Submit' colorScheme='blue'>Login</Button>
-        </form>
+    <Box maxW="sm" mx="auto">
+      <form onSubmit={handleLogin}>
+        <FormLabel>Email</FormLabel>
+        <Input 
+          type="email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+          required 
+        />
+        <FormLabel>Password</FormLabel>
+        <Input 
+          type="password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+          required 
+        />
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <Button type="submit" colorScheme="blue" mt={4}>Log In</Button>
+      </form>
     </Box>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
