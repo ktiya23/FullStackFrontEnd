@@ -1,70 +1,143 @@
-# Getting Started with Create React App
+## Project Overview
+This project is a product management frontend application built with React, Chakra UI for styling, Axios for API requests, and React Router for navigation. It allows users to register, log in, view, create, and delete products. The application manages authentication through local storage and uses token-based authorization to interact with protected endpoints.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Frontend Setup Instructions
 
-## Available Scripts
+**Prerequisites:**
 
-In the project directory, you can run:
+- Node.js installed (version >= 14)
+- Package manager (npm or yarn)
 
-### `npm start`
+**Installation Steps:**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Clone the Repository: Open a terminal and run:
+    git clone https://github.com/ktiya23/FullStackFrontEnd
+    cd FullStackFrontEnd
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Install Dependencies:
+    npm install
 
-### `npm test`
+Start the Application:
+    npm start
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The app will be available at http://localhost:3000.
 
-### `npm run build`
+**Key Dependencies:**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- React: Frontend library
+- Chakra UI: For styling components
+- Axios: For making API requests
+- React Router: For client-side routing
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+##  Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+/src
+  /components
+    - NavBar.js         // Navigation bar component
+    - Login.js          // Login form
+    - Signup.js         // Signup form
+    - ProductForm.js    // Form to add products
+    - ProductList.js    // List of products
+  /context
+    - authContext.js    // Context API for managing authentication
+  /pages
+    - HomePage.js       // Home page of the application
+    - ProductPage.js    // Page to view products
+    - NotFoundPage.js   // 404 page
+  App.js                // Main app file
+  index.js              // Entry point for the React app
 
-### `npm run eject`
+## API Service Integration
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Interacting with Backend Endpoints:
+The app interacts with a backend API using Axios. Below are the key operations:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Signup (POST):**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Endpoint: /api/signup
+Request: { email: 'test@example.com', password: 'password' }
+On success, user is redirected to the login page.
+Login (POST):
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Endpoint: /api/login
+Request: { email: 'test@example.com', password: 'password' }
+On success, a token is stored in localStorage and used for authorization in subsequent requests.
+Fetch Products (GET):
 
-## Learn More
+- Endpoint: /api/products
+Requires Authorization header with the stored token.
+Fetches all available products for the logged-in user.
+Create Product (POST):
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Endpoint: /api/products
+Request: { name: 'Product Name', price: 100 }
+Adds a new product to the list.
+Delete Product (DELETE):
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Endpoint: /api/products/:id
+Deletes the specified product based on the product ID.
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Authentication Flow
 
-### Analyzing the Bundle Size
+Sign Up: Users can create an account using their email and password.
+Log In: Once logged in, the user receives a token which is stored in localStorage.
+Protected Routes:
+The product-related routes are protected and only accessible when the user is authenticated.
+Token-based authentication is implemented by attaching the Authorization header with the token to each API request.
+On log out, the token is removed from localStorage and the user is redirected to the login page.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## User Instructions
 
-### Making a Progressive Web App
+- Registration:
+Navigate to the Signup page (/signup).
+Enter your email and password, then click "Sign Up."
+On successful registration, you’ll be redirected to the login page.
+- Login:
+Navigate to the Login page (/login).
+Enter your registered email and password.
+Upon successful login, you will be taken to the product page.
+- CRUD Operations:
+View Products: After logging in, visit the products page to view all products.
+Create a Product: Use the product form to add new products.
+Delete a Product: Each product in the list has a delete button. Click it to remove the product.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## API Endpoints
 
-### Advanced Configuration
+- Sign Up: /api/signup (POST)
+- Login: /api/login (POST)
+- Get Products: /api/products (GET)
+- Create Product: /api/products (POST)
+- Delete Product: /api/products/:id (DELETE)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Authentication Handling
 
-### Deployment
+**Auth Context:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The AuthProvider wraps the application and provides authentication-related logic through React's Context API.
+This handles checking if a user is logged in, storing and retrieving tokens, and managing log out.
 
-### `npm run build` fails to minify
+**Protected Routes:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Routes related to products are protected using the token-based mechanism.
+When the user is not logged in, they cannot access these routes and are redirected to the login page.
+
+**Storing Token:**
+
+The token is stored in localStorage after a successful login.
+Each API request checks for this token and attaches it to the Authorization header.
+
+## Deployment Instructions
+
+You can deploy the application to platforms like Vercel, Netlify, or GitHub Pages.
+
+**Netlify Deployment:**
+
+Login to Netlify and connect your GitHub repository.
+
+Deploy the Site:
+
+On Netlify's dashboard, choose "New Site from Git."
+Select the repository containing your project.
+Click "Deploy" and wait for the deployment to complete.
+Custom Domain: Optionally, set up a custom domain through Netlify’s domain settings.
